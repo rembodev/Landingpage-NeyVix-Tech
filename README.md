@@ -1,15 +1,15 @@
-# ⚡ NEYVIX TECH — Plataforma Web & Sistema de Gestión de Taller
+# NEYVIX TECH — Plataforma Web & Sistema de Gestión de Taller
 
 > **Plataforma integral de soporte técnico y TI especializada en Chiclayo, Perú.**  
 > Diseñada para ofrecer una experiencia de cara al cliente moderna y de alto rendimiento, complementada con un módulo administrativo privado para gestión de órdenes de trabajo de taller y analítica web en tiempo real.
 
 ---
 
-## 🚀 Vista General y Módulos
+## Vista General y Módulos
 
 La plataforma se divide en tres subsistemas integrados:
 
-### 1. 🌐 Landing Page Pública (`/`)
+### 1. Landing Page Pública (`/`)
 Diseño *dark mode premium* (`#0B0F17` / `#070b13`) con estética neón en azul cian (`#00D2FF`) y violeta (`#9D4EDD`), orientada a conversión y transparencia:
 - **Hero Interactivo:** Presentación de propuesta de valor con llamados a la acción rápidos.
 - **Catálogo de Servicios:** Detalle de mantenimiento térmico (con pasta Arctic MX-4), repotenciación SSD/RAM NVMe, optimización de software y reparación electrónica.
@@ -20,7 +20,7 @@ Diseño *dark mode premium* (`#0B0F17` / `#070b13`) con estética neón en azul 
 
 ---
 
-### 2. 🛠️ Sistema de Gestión de Taller (`/taller` o `/admin`)
+### 2. Sistema de Gestión de Taller (`/taller` o `/admin`)
 Módulo privado para técnicos y administradores, protegido por **Supabase Auth**:
 - **Panel de Métricas (Dashboard):** Conteo de órdenes activas, equipos en diagnóstico, en reparación, listos para entrega y recaudación acumulada.
 - **Pipeline Kanban & Vista de Tabla:** Flujo de estados con actualización reactiva (`diagnostico` ➔ `en_proceso` ➔ `control_calidad` ➔ `listo` ➔ `entregado`).
@@ -41,7 +41,7 @@ Módulo privado para técnicos y administradores, protegido por **Supabase Auth*
 
 ---
 
-### 3. 📊 Analítica Web & Tracking en Tiempo Real (`/tracking` o `/analytics`)
+### 3. Analítica Web & Tracking en Tiempo Real (`/tracking` o `/analytics`)
 Módulo analítico interno para monitorear el comportamiento de los visitantes en la landing page:
 - **Rastreador Asíncrono (`src/lib/tracker.js`):**
   - Registro de `page_view`, clics en WhatsApp, cotizaciones y enlaces telefónicos.
@@ -55,7 +55,7 @@ Módulo analítico interno para monitorear el comportamiento de los visitantes e
 
 ---
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 
 | Capa | Tecnologías |
 |---|---|
@@ -66,7 +66,7 @@ Módulo analítico interno para monitorear el comportamiento de los visitantes e
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```plaintext
 neyvix-tech/
@@ -121,7 +121,7 @@ neyvix-tech/
 
 ---
 
-## ⚙️ Instalación y Puesta en Marcha
+## Instalación y Puesta en Marcha
 
 ### Requisitos Previos
 - **Node.js** v18 o superior
@@ -169,7 +169,7 @@ La aplicación estará disponible localmente en `http://localhost:5173`.
 
 ---
 
-## 📌 Rutas de la Aplicación
+## Rutas de la Aplicación
 
 | Ruta / Hash | Descripción | Acceso |
 |---|---|---|
@@ -179,7 +179,7 @@ La aplicación estará disponible localmente en `http://localhost:5173`.
 
 ---
 
-## 🧪 Pruebas y Depuración Rápida en Consola
+## Pruebas y Depuración Rápida en Consola
 
 Para verificar que el sistema de analítica y la conexión con Supabase estén activos, puedes abrir la consola de desarrollo del navegador (`F12`) en la landing page y ejecutar:
 
@@ -193,7 +193,7 @@ window.__resetTracker();
 
 ---
 
-## 📦 Scripts Disponibles
+## Scripts Disponibles
 
 - `npm run dev` — Inicia el servidor de desarrollo local con Hot Module Replacement (HMR).
 - `npm run build` — Compila y optimiza la aplicación para producción en la carpeta `dist/`.
@@ -202,6 +202,6 @@ window.__resetTracker();
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 Este proyecto es propiedad privada de **NEYVIX TECH** — Chiclayo, Perú. Todos los derechos reservados.

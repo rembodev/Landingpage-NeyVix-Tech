@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { PlusCircle, LayoutDashboard, LogOut } from 'lucide-react';
+import { PlusCircle, LayoutDashboard, LogOut, Activity } from 'lucide-react';
 
 export default function WorkshopHeader({
   activeTab,
@@ -26,8 +26,6 @@ export default function WorkshopHeader({
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
-
-  const isConnected = isOnline && (isSupabase || true);
 
   return (
     <header className="sticky top-0 z-40 bg-[#0B0F17]/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-black/40 select-none">
@@ -57,10 +55,15 @@ export default function WorkshopHeader({
             </div>
           </div>
 
-          {/* Center Navigation Tabs: Pipeline & Nueva Recepción (Sin Ajustes SQL) */}
+          {/* Center Navigation Tabs: Pipeline & Tráfico & Métricas */}
           <div className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1 rounded-xl border border-slate-800">
             <button
-              onClick={() => setActiveTab('pipeline')}
+              onClick={() => {
+                setActiveTab('pipeline');
+                if (typeof window !== 'undefined') {
+                  window.history.pushState(null, '', '/taller');
+                }
+              }}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
                 activeTab === 'pipeline'
                   ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow'
@@ -74,6 +77,27 @@ export default function WorkshopHeader({
                   {orderCounts.total}
                 </span>
               )}
+            </button>
+
+            <button
+              onClick={() => {
+                setActiveTab('analytics');
+                if (typeof window !== 'undefined') {
+                  window.history.pushState(null, '', '/tracking');
+                }
+              }}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                activeTab === 'analytics'
+                  ? 'bg-gradient-to-r from-purple-600 to-cyan-500 text-white shadow'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+              }`}
+            >
+              <Activity className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Tráfico & Métricas</span>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+              </span>
             </button>
 
             <button
@@ -121,14 +145,38 @@ export default function WorkshopHeader({
               </span>
             </div>
 
-            {/* Mobile New Order Button */}
-            <button
-              onClick={onOpenNewOrder}
-              className="md:hidden flex items-center justify-center p-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 cursor-pointer"
-              title="Nueva Recepción"
-            >
-              <PlusCircle className="w-5 h-5" />
-            </button>
+            {/* Mobile Toggle and New Order Button */}
+            <div className="flex md:hidden items-center gap-1.5">
+              <button
+                onClick={() => {
+                  const nextTab = activeTab === 'pipeline' ? 'analytics' : 'pipeline';
+                  setActiveTab(nextTab);
+                  if (typeof window !== 'undefined') {
+                    window.history.pushState(null, '', nextTab === 'analytics' ? '/tracking' : '/taller');
+                  }
+                }}
+                className={`p-2 rounded-xl border transition cursor-pointer ${
+                  activeTab === 'analytics'
+                    ? 'bg-purple-600/20 text-purple-300 border-purple-500/40'
+                    : 'bg-slate-800 text-slate-300 border-slate-700'
+                }`}
+                title={activeTab === 'pipeline' ? 'Ver Analítica' : 'Ver Pipeline'}
+              >
+                {activeTab === 'pipeline' ? (
+                  <Activity className="w-4 h-4 text-cyan-400" />
+                ) : (
+                  <LayoutDashboard className="w-4 h-4 text-cyan-400" />
+                )}
+              </button>
+
+              <button
+                onClick={onOpenNewOrder}
+                className="flex items-center justify-center p-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 cursor-pointer"
+                title="Nueva Recepción"
+              >
+                <PlusCircle className="w-4 h-4" />
+              </button>
+            </div>
 
             {/* Tarjeta de Perfil del Técnico (Clickeable -> Abre Mi Perfil) */}
             <button

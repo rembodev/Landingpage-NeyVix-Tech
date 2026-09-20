@@ -97,6 +97,8 @@ export default function Services() {
                     <button
                       type="button"
                       onClick={() => setSelectedService(srv)}
+                      data-track={`Ver Protocolo: ${srv.title}`}
+                      data-track-type="click_service"
                       className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-colors inline-flex items-center gap-1.5 cursor-pointer group/proto"
                     >
                       <span className="text-sm">📋</span>
@@ -111,6 +113,8 @@ export default function Services() {
                     href={createWhatsAppLink(srv.whatsappText)}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-track={`Cotizar: ${srv.title}`}
+                    data-track-type="click_whatsapp"
                     className="w-full flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-xl text-sm font-bold text-white bg-slate-900 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-600 border border-slate-700 hover:border-transparent transition-all duration-300 shadow-md hover:shadow-cyan-500/20 group/btn active:scale-[0.99]"
                   >
                     <WhatsAppIcon className="w-4 h-4 fill-emerald-400 group-hover/btn:fill-white transition-colors" />
@@ -138,6 +142,8 @@ export default function Services() {
             href={createWhatsAppLink("Hola Neyvix Tech, requiero una cotización para múltiples equipos en mi empresa/oficina.")}
             target="_blank"
             rel="noopener noreferrer"
+            data-track="Consultar Paquete Corporativo WhatsApp"
+            data-track-type="click_whatsapp"
             className="shrink-0 px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm shadow-lg shadow-cyan-500/30 transition-all flex items-center gap-2"
           >
             <WhatsAppIcon className="w-4 h-4 fill-slate-950" />
@@ -203,6 +209,8 @@ export default function Services() {
               href={createWhatsAppLink(selectedService.whatsappText)}
               target="_blank"
               rel="noopener noreferrer"
+              data-track={`Coordinar Protocolo: ${selectedService.title}`}
+              data-track-type="click_whatsapp"
               className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-lg shadow-cyan-500/30"
             >
               <WhatsAppIcon className="w-4 h-4 fill-white" />

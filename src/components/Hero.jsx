@@ -51,6 +51,8 @@ export default function Hero() {
                 href={BRAND_DATA.defaultWhatsAppUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-track="Solicitar Diagnóstico Rápido (Hero)"
+                data-track-type="click_whatsapp"
                 className="inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl text-base font-bold text-white bg-gradient-to-r from-cyan-500 via-blue-600 to-cyan-500 bg-size-200 hover:bg-right hover:scale-[1.02] active:scale-[0.99] transition-all duration-300 shadow-xl shadow-cyan-500/25 border border-cyan-400/30"
               >
                 <WhatsAppIcon className="w-5 h-5 fill-white" />
@@ -60,6 +62,8 @@ export default function Hero() {
 
               <a
                 href="#servicios"
+                data-track="Ver Todos los Servicios (Hero)"
+                data-track-type="cta_click"
                 className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-base font-semibold text-slate-200 hover:text-white bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/80 hover:border-cyan-500/50 transition-all duration-200 backdrop-blur-sm"
               >
                 <span>Ver Todos los Servicios</span>

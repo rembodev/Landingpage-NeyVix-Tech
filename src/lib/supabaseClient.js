@@ -11,15 +11,19 @@ export const SUPABASE_URL = (storedUrl || envUrl || '').trim();
 export const SUPABASE_ANON_KEY = (storedKey || envAnonKey || '').trim();
 
 export const isSupabaseConfigured = () => {
-  return (
-    SUPABASE_URL.length > 10 &&
-    SUPABASE_URL.startsWith('http') &&
-    SUPABASE_ANON_KEY.length > 15
-  );
+  const url =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) ||
+    (typeof window !== 'undefined' ? localStorage.getItem('neyvix_supabase_url') : '') ||
+    '';
+  const key =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) ||
+    (typeof window !== 'undefined' ? localStorage.getItem('neyvix_supabase_key') : '') ||
+    '';
+  return url.trim().length > 10 && url.trim().startsWith('http') && key.trim().length > 15;
 };
 
-// Cliente Supabase instanciado si están las credenciales
-export const supabase = isSupabaseConfigured()
+// Cliente Supabase instanciado si están las credenciales estáticas
+export const supabase = (SUPABASE_URL.length > 10 && SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY.length > 15)
   ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       auth: {
         persistSession: true,
@@ -27,6 +31,32 @@ export const supabase = isSupabaseConfigured()
       },
     })
   : null;
+
+let _dynamicClient = null;
+export function getActiveSupabase() {
+  if (supabase) return supabase;
+  if (_dynamicClient) return _dynamicClient;
+
+  const url =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) ||
+    (typeof window !== 'undefined' ? localStorage.getItem('neyvix_supabase_url') : '') ||
+    '';
+  const key =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) ||
+    (typeof window !== 'undefined' ? localStorage.getItem('neyvix_supabase_key') : '') ||
+    '';
+
+  if (url.trim().length > 10 && url.trim().startsWith('http') && key.trim().length > 15) {
+    _dynamicClient = createClient(url.trim(), key.trim(), {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    });
+    return _dynamicClient;
+  }
+  return null;
+}
 
 // ==============================================================================
 // DATOS SEMILLA INICIALES (MOCK STORE REACTIVO PARA FALLBACK LOCAL)

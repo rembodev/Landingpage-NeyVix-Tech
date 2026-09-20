@@ -237,6 +237,8 @@ export default function DiagnosticTool() {
               href={createWhatsAppLink(rec.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
+              data-track={`Cotizar Diagnóstico: ${rec.title}`}
+              data-track-type="click_whatsapp"
               className="w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-emerald-500 via-teal-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-emerald-900/30 hover:shadow-emerald-900/50 hover:scale-[1.01] active:scale-[0.99] transition-all"
             >
               <WhatsAppIcon className="w-5 h-5 fill-white" />

@@ -36,6 +36,8 @@ export default function FloatingWhatsApp() {
             href={BRAND_DATA.defaultWhatsAppUrl}
             target="_blank"
             rel="noopener noreferrer"
+            data-track="Boton Flotante: Chatear por WhatsApp"
+            data-track-type="click_whatsapp"
             className="flex items-center justify-center gap-2 w-full py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-md transition-all"
           >
             <WhatsAppIcon className="w-3.5 h-3.5 fill-slate-950" />
@@ -52,6 +54,8 @@ export default function FloatingWhatsApp() {
         <button
           type="button"
           onClick={() => setShowTooltip(!showTooltip)}
+          data-track="Boton Flotante: Abrir Ventana WhatsApp"
+          data-track-type="cta_click"
           className="relative flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold text-xs sm:text-sm shadow-xl shadow-emerald-900/40 hover:shadow-emerald-700/50 hover:scale-105 active:scale-95 transition-all duration-300 border border-emerald-400/40 cursor-pointer"
           aria-label="Abrir WhatsApp Neyvix Tech"
         >

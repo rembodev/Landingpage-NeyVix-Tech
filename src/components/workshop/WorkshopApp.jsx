@@ -7,6 +7,7 @@ import OrdersPipeline from './OrdersPipeline';
 import OrderReceptionModal from './OrderReceptionModal';
 import ReceiptModal from './ReceiptModal';
 import ProfileModal from './ProfileModal';
+import AnalyticsDashboard from '../analytics/AnalyticsDashboard';
 import {
   supabase,
   isSupabaseConfigured,
@@ -18,11 +19,28 @@ import {
   getLocalOrders,
 } from '../../lib/supabaseClient';
 
-export default function WorkshopApp({ onBackToSite }) {
+export default function WorkshopApp({ onBackToSite, defaultTab }) {
   const { user, loading } = useAuth();
 
   const [orders, setOrders] = useState([]);
-  const [activeTab, setActiveTab] = useState('pipeline');
+  const [activeTab, setActiveTab] = useState(() => {
+    if (defaultTab) return defaultTab;
+    if (typeof window !== 'undefined') {
+      const p = window.location.pathname.toLowerCase();
+      const h = window.location.hash.toLowerCase();
+      if (
+        p === '/tracking' ||
+        p.startsWith('/tracking/') ||
+        p === '/analytics' ||
+        p.startsWith('/analytics/') ||
+        h.includes('tracking') ||
+        h.includes('analytics')
+      ) {
+        return 'analytics';
+      }
+    }
+    return 'pipeline';
+  });
   const [filterStatus, setFilterStatus] = useState('all');
 
   // Modales
@@ -281,28 +299,33 @@ export default function WorkshopApp({ onBackToSite }) {
 
       {/* Contenido Principal */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Métricas Principales en Tarjetas */}
-        <DashboardMetrics
-          orders={safeOrders}
-          onFilterStatus={(st) => {
-            setFilterStatus(st);
-            setActiveTab('pipeline');
-          }}
-        />
+        {activeTab === 'pipeline' ? (
+          <>
+            {/* Métricas Principales en Tarjetas */}
+            <DashboardMetrics
+              orders={safeOrders}
+              onFilterStatus={(st) => {
+                setFilterStatus(st);
+                setActiveTab('pipeline');
+              }}
+            />
 
-        {/* Pipeline & Lista de Órdenes */}
-        {activeTab === 'pipeline' && (
-          <OrdersPipeline
-            orders={safeOrders}
-            onEditOrder={(order) => {
-              setEditingOrder(order);
-              setIsReceptionOpen(true);
-            }}
-            onOpenReceipt={(order) => setReceiptOrder(order)}
-            onUpdateStatus={handleUpdateStatus}
-            filterStatus={filterStatus}
-            setFilterStatus={setFilterStatus}
-          />
+            {/* Pipeline & Lista de Órdenes */}
+            <OrdersPipeline
+              orders={safeOrders}
+              onEditOrder={(order) => {
+                setEditingOrder(order);
+                setIsReceptionOpen(true);
+              }}
+              onOpenReceipt={(order) => setReceiptOrder(order)}
+              onUpdateStatus={handleUpdateStatus}
+              filterStatus={filterStatus}
+              setFilterStatus={setFilterStatus}
+            />
+          </>
+        ) : (
+          /* Vista Protegida de Analítica Web & Live Feed */
+          <AnalyticsDashboard />
         )}
       </main>
 

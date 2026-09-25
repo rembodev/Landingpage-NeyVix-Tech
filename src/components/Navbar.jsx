@@ -39,7 +39,7 @@ export default function Navbar() {
           <div className="relative w-11 h-11 rounded-full p-[1.5px] bg-gradient-to-tr from-cyan-500 via-blue-500 to-violet-600 shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/50 group-hover:scale-105 transition-all duration-300">
             <img 
               src="/logo.webp" 
-              alt="Neyvix Tech Logo" 
+              alt="Logo oficial de Neyvix Tech - Soporte Técnico Especializado" 
               className="w-full h-full object-cover rounded-full bg-[#0B0F17]"
             />
             <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-violet-500 rounded-full blur opacity-30 group-hover:opacity-70 transition duration-300 -z-10"></div>

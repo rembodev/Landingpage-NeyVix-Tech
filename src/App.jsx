@@ -11,6 +11,7 @@ import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import ContactFooter from './components/ContactFooter';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
+import NotFound from './components/NotFound';
 import { initTracker } from './lib/tracker';
 
 /**
@@ -18,12 +19,14 @@ import { initTracker } from './lib/tracker';
  * - 'landing': Ruta Raíz (/)
  * - 'workshop': /taller o /admin
  * - 'analytics': /tracking o /analytics
+ * - 'notfound': Rutas inexistentes / 404
  */
 function getRouteView() {
   if (typeof window === 'undefined') return 'landing';
   const path = window.location.pathname.toLowerCase();
   const hash = window.location.hash.toLowerCase();
 
+  // 1. Módulo de Analítica y Tracking
   if (
     path === '/tracking' ||
     path.startsWith('/tracking/') ||
@@ -37,6 +40,7 @@ function getRouteView() {
     return 'analytics';
   }
 
+  // 2. Módulo de Taller de Reparaciones
   if (
     path === '/taller' ||
     path.startsWith('/taller/') ||
@@ -50,7 +54,18 @@ function getRouteView() {
     return 'workshop';
   }
 
-  return 'landing';
+  // 3. Ruta explícita 404
+  if (path === '/404' || hash === '#404' || hash === '#/404') {
+    return 'notfound';
+  }
+
+  // 4. Ruta Raíz Pública Oficial (/) con soporte de anclas (#servicios, #contacto, etc.)
+  if (path === '/' || path === '' || path === '/index.html') {
+    return 'landing';
+  }
+
+  // 5. Cualquier otra ruta inexistente (Comodín 404)
+  return 'notfound';
 }
 
 export default function App() {
@@ -92,7 +107,10 @@ export default function App() {
 
   return (
     <AuthProvider>
-      {isPrivate ? (
+      {routeView === 'notfound' ? (
+        /* Ruta No Encontrada: 404 */
+        <NotFound onGoHome={handleGoHome} />
+      ) : isPrivate ? (
         /* Rutas Privadas: /taller, /admin, /tracking o /analytics */
         <WorkshopApp
           onBackToSite={handleGoHome}

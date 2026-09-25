@@ -115,7 +115,7 @@ export default function ProfileModal({ isOpen, onClose }) {
             <div className="relative w-12 h-12 rounded-full overflow-hidden border border-cyan-500/50 shrink-0">
               <img
                 src={user?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}
-                alt={user?.full_name || 'Técnico'}
+                alt={user?.full_name ? `Avatar de perfil de ${user.full_name}` : 'Avatar de perfil de técnico responsable'}
                 className="w-full h-full object-cover"
               />
             </div>

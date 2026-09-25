@@ -1,4 +1,17 @@
-# Logs
+# ==============================================================================
+# NEYVIX TECH - GITIGNORE REGLAS DE SEGURIDAD Y DESPLIEGUE
+# ==============================================================================
+
+# Variables de entorno y secretos locales (NUNCA SUBIR A GIT)
+.env
+.env.*
+!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs y depuración
 logs
 *.log
 npm-debug.log*
@@ -7,12 +20,22 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencias y salidas de compilación
 node_modules
 dist
 dist-ssr
 *.local
 
-# Editor directories and files
+# Archivos de caché y herramientas de empaquetado
+.vite
+.cache
+.eslintcache
+.parcel-cache
+
+# Archivos temporales de despliegue (Netlify)
+.netlify
+
+# Archivos de configuración de editores y SO
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,3 +45,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+Thumbs.db

@@ -10,7 +10,8 @@ import {
   CheckCircle2, 
   Clock, 
   Sparkles,
-  RefreshCw
+  RefreshCw,
+  Loader2
 } from 'lucide-react';
 import { createWhatsAppLink } from '../data/content';
 import WhatsAppIcon from './WhatsAppIcon';
@@ -19,6 +20,7 @@ export default function DiagnosticTool() {
   const [deviceType, setDeviceType] = useState('laptop_office');
   const [symptom, setSymptom] = useState('slow');
   const [goal, setGoal] = useState('ssd');
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const devices = [
     { id: 'laptop_office', name: 'Laptop Trabajo / Oficina', icon: Laptop },
@@ -237,12 +239,29 @@ export default function DiagnosticTool() {
               href={createWhatsAppLink(rec.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                setIsRedirecting(true);
+                setTimeout(() => setIsRedirecting(false), 1200);
+              }}
               data-track={`Cotizar Diagnóstico: ${rec.title}`}
               data-track-type="click_whatsapp"
-              className="w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-emerald-500 via-teal-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-emerald-900/30 hover:shadow-emerald-900/50 hover:scale-[1.01] active:scale-[0.99] transition-all"
+              className={`w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl font-bold text-sm text-white transition-all ${
+                isRedirecting
+                  ? 'bg-emerald-700 opacity-90 cursor-wait'
+                  : 'bg-gradient-to-r from-emerald-500 via-teal-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-emerald-900/30 hover:shadow-emerald-900/50 hover:scale-[1.01] active:scale-[0.99]'
+              }`}
             >
-              <WhatsAppIcon className="w-5 h-5 fill-white" />
-              <span>Cotizar este diagnóstico por WhatsApp</span>
+              {isRedirecting ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>Preparando cotización y abriendo WhatsApp...</span>
+                </>
+              ) : (
+                <>
+                  <WhatsAppIcon className="w-5 h-5 fill-white" />
+                  <span>Cotizar este diagnóstico por WhatsApp</span>
+                </>
+              )}
             </a>
 
             <p className="text-center text-[11px] text-slate-400 mt-4">

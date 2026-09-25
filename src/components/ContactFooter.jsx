@@ -7,7 +7,10 @@ import {
   Mail, 
   Send, 
   ShieldCheck, 
-  ArrowUp
+  ArrowUp,
+  AlertCircle,
+  CheckCircle2,
+  Loader2
 } from 'lucide-react';
 import { BRAND_DATA, createWhatsAppLink } from '../data/content';
 import WhatsAppIcon from './WhatsAppIcon';
@@ -31,16 +34,67 @@ export default function ContactFooter() {
     device: '',
     issue: ''
   });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Por favor ingresa tu nombre completo.';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'El nombre debe tener al menos 2 caracteres.';
+    }
+
+    const cleanPhone = formData.phone.replace(/[\s-]/g, '');
+    if (!cleanPhone) {
+      newErrors.phone = 'Ingresa un número telefónico o WhatsApp.';
+    } else if (!/^[0-9+]{8,15}$/.test(cleanPhone)) {
+      newErrors.phone = 'Ingresa un número válido de Perú (ej. 929 443 131).';
+    }
+
+    if (!formData.device.trim()) {
+      newErrors.device = 'Indica el equipo (marca y modelo, ej. Lenovo ThinkPad).';
+    }
+
+    if (!formData.issue.trim()) {
+      newErrors.issue = 'Describe la falla o servicio requerido.';
+    } else if (formData.issue.trim().length < 4) {
+      newErrors.issue = 'Por favor describe un poco más el problema.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const text = `Hola Neyvix Tech, mi nombre es ${formData.name || 'Cliente'}.
-Mi número de contacto es: ${formData.phone || 'No especificado'}
-Mi equipo es: ${formData.device || 'No especificado'}
-Detalle de la falla / requerimiento: ${formData.issue || 'Deseo cotizar'}
-¿Podrían apoyarme con la cotización?`;
+    if (!validateForm()) return;
 
-    window.open(createWhatsAppLink(text), '_blank');
+    setIsSubmitting(true);
+    setSubmitSuccess(false);
+
+    const text = `Hola Neyvix Tech, mi nombre es ${formData.name.trim()}.
+Mi número de contacto es: ${formData.phone.trim()}
+Mi equipo es: ${formData.device.trim()}
+Detalle de la falla / requerimiento: ${formData.issue.trim()}
+¿Podrían apoyarme con el diagnóstico y presupuesto?`;
+
+    const targetUrl = createWhatsAppLink(text);
+
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitSuccess(true);
+      window.open(targetUrl, '_blank');
+    }, 600);
   };
 
   const scrollToTop = () => {
@@ -111,64 +165,135 @@ Detalle de la falla / requerimiento: ${formData.issue || 'Deseo cotizar'}
               Completa los datos y se abrirá tu WhatsApp con el mensaje estructurado listo para enviar.
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} noValidate className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">Tu Nombre</label>
+                <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
+                  <span>Tu Nombre y Apellidos</span>
+                  {errors.name && (
+                    <span className="text-[11px] text-rose-400 font-normal flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" /> {errors.name}
+                    </span>
+                  )}
+                </label>
                 <input
                   type="text"
-                  required
                   placeholder="Ej. Juan Pérez"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 transition-colors"
+                  onChange={(e) => handleChange('name', e.target.value)}
+                  className={`w-full px-4 py-2.5 rounded-xl bg-slate-900 border text-white placeholder-slate-500 text-sm focus:outline-none transition-all ${
+                    errors.name
+                      ? 'border-rose-500/70 bg-rose-950/20 focus:border-rose-400 focus:ring-1 focus:ring-rose-500/30'
+                      : 'border-slate-700 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-500/20'
+                  }`}
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">Teléfono / Celular</label>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
+                    <span>Teléfono / Celular</span>
+                    {errors.phone && (
+                      <span className="text-[10px] text-rose-400 font-normal flex items-center gap-1">
+                        <AlertCircle className="w-2.5 h-2.5" /> Requerido
+                      </span>
+                    )}
+                  </label>
                   <input
                     type="tel"
-                    required
-                    placeholder="Ej. 938 231 843"
+                    placeholder="Ej. 929 443 131"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 transition-colors"
+                    onChange={(e) => handleChange('phone', e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl bg-slate-900 border text-white placeholder-slate-500 text-sm focus:outline-none transition-all ${
+                      errors.phone
+                        ? 'border-rose-500/70 bg-rose-950/20 focus:border-rose-400 focus:ring-1 focus:ring-rose-500/30'
+                        : 'border-slate-700 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-500/20'
+                    }`}
                   />
+                  {errors.phone && (
+                    <p className="text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3 shrink-0" /> {errors.phone}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">Equipo (Marca y Modelo)</label>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
+                    <span>Equipo (Marca y Modelo)</span>
+                    {errors.device && (
+                      <span className="text-[10px] text-rose-400 font-normal flex items-center gap-1">
+                        <AlertCircle className="w-2.5 h-2.5" /> Requerido
+                      </span>
+                    )}
+                  </label>
                   <input
                     type="text"
-                    required
-                    placeholder="Ej. Asus ROG / Lenovo ThinkPad"
+                    placeholder="Ej. Asus TUF / Lenovo ThinkPad"
                     value={formData.device}
-                    onChange={(e) => setFormData({ ...formData, device: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 transition-colors"
+                    onChange={(e) => handleChange('device', e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl bg-slate-900 border text-white placeholder-slate-500 text-sm focus:outline-none transition-all ${
+                      errors.device
+                        ? 'border-rose-500/70 bg-rose-950/20 focus:border-rose-400 focus:ring-1 focus:ring-rose-500/30'
+                        : 'border-slate-700 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-500/20'
+                    }`}
                   />
+                  {errors.device && (
+                    <p className="text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3 shrink-0" /> {errors.device}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">¿Qué falla presenta o qué servicio requieres?</label>
+                <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
+                  <span>¿Qué falla presenta o qué servicio requieres?</span>
+                  {errors.issue && (
+                    <span className="text-[11px] text-rose-400 font-normal flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" /> {errors.issue}
+                    </span>
+                  )}
+                </label>
                 <textarea
                   rows="3"
-                  required
-                  placeholder="Ej. Se calienta mucho, la pantalla parpadea o deseo instalar un disco sólido de 1TB..."
+                  placeholder="Ej. Se calienta demasiado, ventilador suena fuerte o deseo instalar un SSD de 1TB..."
                   value={formData.issue}
-                  onChange={(e) => setFormData({ ...formData, issue: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 transition-colors resize-none"
+                  onChange={(e) => handleChange('issue', e.target.value)}
+                  className={`w-full px-4 py-2.5 rounded-xl bg-slate-900 border text-white placeholder-slate-500 text-sm focus:outline-none transition-all resize-none ${
+                    errors.issue
+                      ? 'border-rose-500/70 bg-rose-950/20 focus:border-rose-400 focus:ring-1 focus:ring-rose-500/30'
+                      : 'border-slate-700 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-500/20'
+                  }`}
                 />
               </div>
 
               <button
                 type="submit"
+                disabled={isSubmitting}
                 data-track="Formulario Contacto: Enviar Consulta a WhatsApp"
                 data-track-type="click_whatsapp"
-                className="w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-cyan-500 via-blue-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-cyan-500/25 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
+                className={`w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white transition-all flex items-center justify-center gap-2.5 ${
+                  isSubmitting
+                    ? 'bg-cyan-800/80 cursor-wait'
+                    : submitSuccess
+                    ? 'bg-emerald-600 hover:bg-emerald-500 shadow-lg shadow-emerald-900/40'
+                    : 'bg-gradient-to-r from-cyan-500 via-blue-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-cyan-500/25 active:scale-[0.99] cursor-pointer'
+                }`}
               >
-                <WhatsAppIcon className="w-5 h-5 fill-white" />
-                <span>Enviar Consulta Directa a WhatsApp</span>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Estructurando consulta y abriendo WhatsApp...</span>
+                  </>
+                ) : submitSuccess ? (
+                  <>
+                    <CheckCircle2 className="w-5 h-5 text-emerald-200" />
+                    <span>¡Consulta enviada a WhatsApp! Volver a consultar</span>
+                  </>
+                ) : (
+                  <>
+                    <WhatsAppIcon className="w-5 h-5 fill-white" />
+                    <span>Enviar Consulta Directa a WhatsApp</span>
+                  </>
+                )}
               </button>
             </form>
           </div>
@@ -185,7 +310,7 @@ Detalle de la falla / requerimiento: ${formData.issue || 'Deseo cotizar'}
             <div className="w-10 h-10 rounded-full p-[1.5px] bg-gradient-to-tr from-cyan-500 to-violet-600 shadow-md">
               <img
                 src="/logo.webp"
-                alt="Neyvix Tech"
+                alt="Logo oficial de Neyvix Tech - Soporte Técnico en Chiclayo"
                 className="w-full h-full object-cover rounded-full bg-[#080B11]"
               />
             </div>

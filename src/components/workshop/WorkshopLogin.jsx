@@ -42,7 +42,7 @@ export default function WorkshopLogin({ onBackToSite }) {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-0.5 shadow-xl shadow-cyan-500/20 mb-4">
             <img
               src="/logo.webp"
-              alt="Neyvix Tech"
+              alt="Logo oficial de Neyvix Tech para acceso técnico"
               className="w-full h-full object-cover rounded-2xl bg-[#0B0F17]"
             />
           </div>

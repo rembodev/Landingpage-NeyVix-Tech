@@ -36,7 +36,7 @@ export default function WorkshopHeader({
             <div className="relative w-10 h-10 rounded-xl p-[1px] bg-gradient-to-tr from-cyan-400 to-blue-600 shadow-md shadow-cyan-500/20">
               <img
                 src="/logo.webp"
-                alt="Neyvix Tech"
+                alt="Logo oficial de Neyvix Tech Taller Pro"
                 className="w-full h-full object-cover rounded-xl bg-[#0B0F17]"
               />
             </div>
@@ -187,7 +187,7 @@ export default function WorkshopHeader({
               <div className="relative w-8 h-8 rounded-full overflow-hidden border border-cyan-500/50 group-hover:border-cyan-400 shrink-0 transition">
                 <img
                   src={user?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}
-                  alt={user?.full_name || 'Técnico'}
+                  alt={user?.full_name ? `Avatar del técnico ${user.full_name}` : 'Avatar del técnico responsable'}
                   className="w-full h-full object-cover"
                 />
               </div>

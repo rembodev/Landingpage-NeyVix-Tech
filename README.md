@@ -72,7 +72,7 @@ Módulo analítico interno para monitorear el comportamiento de los visitantes e
 neyvix-tech/
 ├── public/
 │   ├── _redirects              # Regla de redirección SPA para Netlify
-│   ├── favicon.svg             # Favicon vectorial oficial
+│   ├── favicon.webp            # Favicon oficial de Neyvix Tech
 │   └── logo.webp               # Logotipo de Neyvix Tech
 ├── src/
 │   ├── assets/                 # Recursos gráficos (imágenes, diagramas)

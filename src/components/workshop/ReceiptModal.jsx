@@ -111,7 +111,7 @@ export default function ReceiptModal({ isOpen, onClose, order }) {
                 <div className="w-12 h-12 rounded-xl overflow-hidden border border-slate-300 shadow-xs shrink-0 bg-white">
                   <img
                     src="/logo.webp"
-                    alt="Neyvix Tech Logo"
+                    alt="Logo Neyvix Tech para comprobante de orden de trabajo"
                     className="w-full h-full object-cover"
                   />
                 </div>

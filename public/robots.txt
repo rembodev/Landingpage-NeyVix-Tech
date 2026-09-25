@@ -1,0 +1,20 @@
+# ==============================================================================
+# NEYVIX TECH - ARCHIVO ROBOTS.TXT
+# https://neyvixtech.netlify.app/
+# ==============================================================================
+
+User-agent: *
+Allow: /
+
+# Bloquear indexación de módulos administrativos y analítica privada
+Disallow: /taller
+Disallow: /taller/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /tracking
+Disallow: /tracking/
+Disallow: /analytics
+Disallow: /analytics/
+
+# Declaración del Sitemap XML oficial
+Sitemap: https://neyvixtech.netlify.app/sitemap.xml
